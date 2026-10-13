@@ -1,0 +1,450 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Horizon Press</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,300..600,50&family=Hanken+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400&family=Noto+Serif+SC:wght@400;600&family=Noto+Sans+SC:wght@400;500&display=swap">
+<style>
+/* Layout: full-bleed dusk hero with torn photo scraps on both edges → cream "paper" sections in a label / body two-column grid */
+:root {
+  --paper: #f3efe6;
+  --ink: #1b1915;
+  --muted: #6b655a;
+  --rule: #cfc6b4;
+  --accent: #c4552b;
+  --sky: #2f5d9a;
+  --code-bg: #e9e3d6;
+  --grain-opacity: .22;
+  --grain-blend: multiply;
+
+  /* hero is always night — fixed colors, not themed */
+  --night: #0d0b0a;
+  --night-ink: #f3ece0;
+  --night-muted: #c9bfae;
+
+  --f-display: "Fraunces", "Noto Serif SC", "Songti SC", Georgia, serif;
+  --f-body: "Fraunces", "Noto Serif SC", "Songti SC", Georgia, serif;
+  --f-ui: "Hanken Grotesk", "Noto Sans SC", "PingFang SC", system-ui, sans-serif;
+  --f-mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+
+  --gutter: max(16px, 4vw);
+  --grain: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .5  0 0 0 0 .5  0 0 0 0 .5  0 0 0 1.6 -.3'/></filter><rect width='100%' height='100%' filter='url(%23g)'/></svg>");
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #15130f; --ink: #ece5d8; --muted: #a39a8a; --rule: #3a352d;
+    --accent: #e57a45; --sky: #8fb0e0; --code-bg: #201d18;
+    --grain-opacity: .16; --grain-blend: screen;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #15130f; --ink: #ece5d8; --muted: #a39a8a; --rule: #3a352d;
+  --accent: #e57a45; --sky: #8fb0e0; --code-bg: #201d18;
+  --grain-opacity: .16; --grain-blend: screen;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--f-body);
+  font-size: 18px;
+  line-height: 1.65;
+  letter-spacing: -0.01em;
+  font-variation-settings: "SOFT" 50;
+  overflow-x: hidden;
+}
+/* film grain over the paper */
+body::before {
+  content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 50;
+  background-image: var(--grain); background-size: 240px;
+  opacity: var(--grain-opacity); mix-blend-mode: var(--grain-blend);
+}
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+.eyebrow {
+  font-family: var(--f-ui); font-size: 12px; font-weight: 500;
+  letter-spacing: .12em; text-transform: uppercase;
+}
+
+/* ───────── HERO ───────── */
+.hero {
+  position: relative; isolation: isolate; overflow: hidden;
+  background: linear-gradient(#060d22 0%, #12285a 45%, #2b4f8c 100%);
+  color: var(--night-ink);
+  padding-inline: calc(var(--gutter) + var(--scrap-w));
+  --scrap-w: clamp(14px, 5vw, 96px);
+}
+.hero::after { /* grain + vignette on the photo */
+  content: ""; position: absolute; inset: 0; z-index: 5; pointer-events: none;
+  background:
+    var(--grain) 0 0 / 200px,
+    radial-gradient(120% 80% at 50% 40%, transparent 55%, rgba(0,0,0,.45));
+  mix-blend-mode: overlay; opacity: .9;
+  animation: flicker 1.2s steps(4) infinite;
+}
+@keyframes flicker {
+  0% { background-position: 0 0, 0 0; } 25% { background-position: -40px 30px, 0 0; }
+  50% { background-position: 60px -20px, 0 0; } 75% { background-position: -20px -50px, 0 0; }
+}
+
+.nav {
+  position: relative; z-index: 6;
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px 32px;
+  padding-block: 22px;
+  font-family: var(--f-ui); font-size: 15px;
+}
+.wordmark { font-weight: 600; font-size: 22px; letter-spacing: .14em; text-transform: uppercase; text-decoration: none; }
+.nav ul { display: flex; flex-wrap: wrap; gap: 8px 28px; list-style: none; margin: 0; padding: 0; align-items: center; }
+.nav a { text-decoration: none; opacity: .92; }
+.nav a:hover { opacity: 1; text-decoration: underline; text-underline-offset: 4px; }
+.nav .cta {
+  background: var(--night-ink); color: #141413; opacity: 1;
+  padding: 9px 18px; border-radius: 8px; font-weight: 500;
+}
+.nav .cta:hover { text-decoration: none; background: #fff; }
+
+.stage {
+  position: relative; text-align: center;
+  padding-top: clamp(110px, 20vw, 240px);
+}
+.stage > * { position: relative; z-index: 2; }
+/* the planet's edge: a giant dark circle whose shadow is the sunset */
+.stage::before {
+  content: ""; position: absolute; z-index: 0;
+  left: 50%; top: calc(100% - .32em);
+  width: max(2600px, 280vw); aspect-ratio: 1; max-width: none;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: var(--night);
+  font-size: clamp(56px, 11vw, 168px);
+  box-shadow:
+    0 -2px 3px #ffe2b0,
+    0 -8px 18px #ff9a4a,
+    0 -26px 50px rgba(240,100,40,.85),
+    0 -70px 110px rgba(210,90,60,.55),
+    0 -170px 180px rgba(140,150,200,.55),
+    0 -320px 260px rgba(90,135,200,.6);
+}
+.date { color: var(--night-ink); opacity: .9; margin: 0 0 28px; letter-spacing: .14em; }
+.date span { margin-inline: .6em; opacity: .5; }
+
+h1.title {
+  margin: 0;
+  font-family: var(--f-display);
+  font-weight: 500;
+  font-size: clamp(56px, 11vw, 168px);
+  line-height: 1;
+  letter-spacing: -0.035em;
+  font-variation-settings: "SOFT" 50, "opsz" 144;
+  color: var(--night-ink);
+  filter: url(#ink);
+  text-wrap: balance;
+  animation: develop 1.6s cubic-bezier(.2,.7,.2,1) both;
+}
+@keyframes develop {
+  from { opacity: .4; letter-spacing: .02em; }
+  to   { opacity: 1;  letter-spacing: -0.035em; }
+}
+
+.toc {
+  position: relative; z-index: 6;
+  list-style: none; margin: clamp(64px, 9vw, 120px) auto 0; padding: 0 0 clamp(96px, 12vw, 160px);
+  width: min(520px, 100%);
+  display: grid; gap: 10px;
+}
+.toc a {
+  display: flex; align-items: baseline; gap: 12px; text-decoration: none;
+  font-family: var(--f-body); font-size: 19px; color: var(--night-ink);
+}
+.toc .n { font-family: var(--f-ui); font-size: 13px; letter-spacing: .08em; color: var(--night-muted); flex: none; }
+.toc .dots { flex: 1; border-bottom: 1px dotted rgba(243,236,224,.45); transform: translateY(-5px); min-width: 24px; }
+.toc .zh { font-family: "Noto Serif SC", serif; font-size: .9em; margin-left: .35em; }
+.toc a:hover .label { text-decoration: underline; text-underline-offset: 4px; }
+
+/* torn photo scraps glued to the edges */
+.scrap { position: absolute; top: 0; bottom: 0; width: var(--scrap-w); z-index: 4; }
+.scrap.left { left: 0; filter: url(#torn); }
+.scrap.right { right: 0; filter: url(#torn); }
+.scrap.left::before, .scrap.left::after,
+.scrap.right::before, .scrap.right::after { content: ""; position: absolute; left: 0; right: 0; }
+.scrap.left::before { /* yellow card stock */
+  top: -20px; height: 62%;
+  background: linear-gradient(170deg, #f1c43a, #e3ac1e 70%, #d29a14);
+}
+.scrap.left::after { /* sand dunes */
+  top: 58%; bottom: -20px;
+  background:
+    linear-gradient(rgba(30,20,10,.25), transparent 30%),
+    repeating-linear-gradient(168deg, #e6d6b6 0 7px, #2e2318 7px 10px, #b9a27e 10px 19px, #d8c4a0 19px 24px);
+  filter: url(#dune);
+}
+.scrap.right::before { /* black backing paper */
+  top: -20px; height: 58%;
+  background: #121110;
+}
+.scrap.right::after { /* red sandstone */
+  top: 54%; bottom: -20px;
+  background:
+    radial-gradient(60% 30% at 30% 12%, #f6b37c, transparent 70%),
+    radial-gradient(50% 40% at 80% 60%, #5e170c, transparent 70%),
+    repeating-linear-gradient(96deg, #c2491f 0 5px, #8e2b13 5px 9px, #db7240 9px 13px, #a63a18 13px 18px);
+  filter: url(#rock);
+}
+
+/* ───────── PAPER SECTIONS ───────── */
+main { padding-inline: var(--gutter); }
+.chapter {
+  display: grid; grid-template-columns: minmax(180px, 1fr) minmax(0, 2.4fr); gap: 24px 56px;
+  max-width: 1120px; margin-inline: auto;
+  padding-block: clamp(56px, 8vw, 104px);
+  border-top: 1px solid var(--rule);
+}
+.chapter:first-child { border-top: 0; }
+.chapter > header { position: relative; }
+.chapter > header .eyebrow { color: var(--muted); position: sticky; top: calc(env(safe-area-inset-top, 0px) + 24px); display: block; }
+.chapter > header .eyebrow b { color: var(--accent); font-weight: 500; margin-right: .6em; }
+.body { min-width: 0; max-width: 66ch; }
+.body h2 {
+  font-family: var(--f-display); font-weight: 400; font-size: clamp(32px, 4.4vw, 52px);
+  line-height: 1.08; letter-spacing: -0.025em; margin: 0 0 .5em; text-wrap: balance;
+  font-variation-settings: "SOFT" 50, "opsz" 96;
+}
+.body h2 .zh { display: block; font-family: "Noto Serif SC", serif; font-size: .52em; letter-spacing: .02em; color: var(--muted); margin-top: .35em; }
+.body p { margin: 0 0 1em; }
+.body .zh-p { font-family: "Noto Serif SC", var(--f-body); font-size: 17px; line-height: 1.9; letter-spacing: .02em; }
+.lede { font-size: 22px; line-height: 1.5; }
+code { font-family: var(--f-mono); font-size: .82em; background: var(--code-bg); padding: .1em .35em; border-radius: 4px; }
+
+/* type specimen */
+.specimen { display: grid; gap: 0; margin-top: 28px; border-top: 1px solid var(--rule); }
+.spec-row {
+  display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 8px 24px; align-items: baseline;
+  padding-block: 18px; border-bottom: 1px solid var(--rule);
+}
+.spec-row .meta { font-family: var(--f-ui); font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; line-height: 1.5; }
+.spec-row .meta b { display: block; color: var(--ink); font-weight: 500; letter-spacing: .06em; text-transform: uppercase; }
+.s-display { font-family: var(--f-display); font-size: 44px; line-height: 1.05; letter-spacing: -0.03em; font-variation-settings: "SOFT" 50, "opsz" 144; }
+.s-body { font-size: 18px; }
+.s-ui { font-family: var(--f-ui); font-size: 15px; }
+.s-eyebrow { font-family: var(--f-ui); font-size: 12px; letter-spacing: .12em; text-transform: uppercase; font-weight: 500; }
+
+/* texture demos */
+.demos { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 28px; margin-top: 32px; max-width: none; }
+.chapter.wide .body { max-width: none; }
+.demo { margin: 0; min-width: 0; display: grid; gap: 14px; align-content: start; }
+.swatch {
+  position: relative; overflow: hidden; isolation: isolate;
+  aspect-ratio: 4 / 3; max-width: 100%;
+  display: grid; place-items: center;
+  border-radius: 2px;
+}
+.swatch.ink { background: var(--night); color: var(--night-ink); }
+.swatch.ink span { font-family: var(--f-display); font-size: 64px; letter-spacing: -0.03em; filter: url(#ink); font-variation-settings: "SOFT" 50, "opsz" 144; }
+.swatch.grain { background: linear-gradient(#12285a, #6e95c8 55%, #f08a3c 70%, #1a0f0a 78%); }
+.swatch.grain::after { content: ""; position: absolute; inset: 0; background: var(--grain) 0 0 / 160px; mix-blend-mode: overlay; }
+.swatch.grain::before { content: ""; position: absolute; inset: 0 50% 0 0; z-index: 1; border-right: 1px dashed rgba(255,255,255,.6); }
+.swatch.grain .tag { position: absolute; bottom: 10px; z-index: 2; font-family: var(--f-ui); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: #fff; }
+.swatch.grain .tag.l { left: 12px; } .swatch.grain .tag.r { right: 12px; }
+.swatch.grain .clean { position: absolute; inset: 0 50% 0 0; z-index: 1; background: linear-gradient(#12285a, #6e95c8 55%, #f08a3c 70%, #1a0f0a 78%); }
+.swatch.torn { background: var(--code-bg); }
+.swatch.torn .paper { width: 62%; height: 78%; background: linear-gradient(170deg, #f1c43a, #d29a14); filter: url(#torn); transform: rotate(-3deg); box-shadow: 0 6px 18px rgba(0,0,0,.2); }
+.demo figcaption { font-size: 16px; line-height: 1.55; }
+.demo figcaption b { font-family: var(--f-ui); font-weight: 600; font-size: 13px; letter-spacing: .1em; text-transform: uppercase; display: block; margin-bottom: 4px; color: var(--accent); }
+pre {
+  margin: 0; overflow-x: auto; max-width: 100%;
+  background: var(--code-bg); color: var(--ink);
+  font-family: var(--f-mono); font-size: 12px; line-height: 1.6;
+  padding: 14px 16px; border-radius: 4px;
+}
+pre .c { color: var(--muted); }
+
+/* usage steps */
+.steps { list-style: none; margin: 28px 0 0; padding: 0; display: grid; gap: 0; counter-reset: s; border-top: 1px solid var(--rule); }
+.steps li {
+  counter-increment: s;
+  display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: 4px 16px;
+  padding-block: 20px; border-bottom: 1px solid var(--rule);
+}
+.steps li::before { content: "(" counter(s) ")"; font-family: var(--f-ui); font-size: 13px; letter-spacing: .08em; color: var(--accent); padding-top: 4px; }
+.steps h3 { margin: 0; font-family: var(--f-display); font-weight: 500; font-size: 22px; letter-spacing: -0.01em; }
+.steps p { margin: 4px 0 0; color: var(--muted); font-size: 16px; grid-column: 2; }
+
+footer {
+  padding: 40px var(--gutter) 56px;
+  border-top: 1px solid var(--rule);
+  display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 24px;
+  color: var(--muted);
+}
+
+@media (max-width: 720px) {
+  body { font-size: 17px; }
+  .chapter { grid-template-columns: minmax(0, 1fr); }
+  .chapter > header .eyebrow { position: static; }
+  .nav ul li:not(:last-child) { display: none; }
+  .toc a { font-size: 16px; }
+  .spec-row { grid-template-columns: minmax(0, 1fr); }
+  .s-display { font-size: 36px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero::after, h1.title { animation: none; }
+  html { scroll-behavior: auto; }
+}
+html { scroll-behavior: smooth; }
+</style>
+</head>
+<body>
+
+<!-- SVG filters: ink-printed type, torn paper edges, wavy dunes, craggy rock -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <filter id="ink" x="-4%" y="-15%" width="108%" height="130%" color-interpolation-filters="sRGB">
+    <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="4" result="n"/>
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="2" xChannelSelector="R" yChannelSelector="G" result="rough"/>
+    <feGaussianBlur in="rough" stdDeviation="0.5" result="soft"/>
+    <feComponentTransfer in="soft" result="ink"><feFuncA type="linear" slope="1.2"/></feComponentTransfer>
+    <feTurbulence type="fractalNoise" baseFrequency="0.75" numOctaves="2" seed="12" result="s"/>
+    <feColorMatrix in="s" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -8 0 0 0 6.6" result="holes"/>
+    <feComposite in="ink" in2="holes" operator="in"/>
+  </filter>
+  <filter id="torn" x="-10%" y="-5%" width="120%" height="110%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.05 0.35" numOctaves="3" seed="7"/>
+    <feDisplacementMap in="SourceGraphic" scale="12" xChannelSelector="R" yChannelSelector="G"/>
+  </filter>
+  <filter id="dune">
+    <feTurbulence type="fractalNoise" baseFrequency="0.012 0.03" numOctaves="2" seed="3"/>
+    <feDisplacementMap in="SourceGraphic" scale="38" xChannelSelector="R" yChannelSelector="G"/>
+  </filter>
+  <filter id="rock">
+    <feTurbulence type="fractalNoise" baseFrequency="0.03 0.09" numOctaves="4" seed="9"/>
+    <feDisplacementMap in="SourceGraphic" scale="46" xChannelSelector="R" yChannelSelector="G"/>
+  </filter>
+</svg>
+
+<header class="hero">
+  <div class="scrap left" aria-hidden="true"></div>
+  <div class="scrap right" aria-hidden="true"></div>
+
+  <nav class="nav" aria-label="Main">
+    <a class="wordmark" href="#">Horizon Press</a>
+    <ul>
+      <li><a href="#intro">Introduction</a></li>
+      <li><a href="#type">Typography</a></li>
+      <li><a href="#texture">Texture</a></li>
+      <li><a class="cta" href="#usage">Use this template</a></li>
+    </ul>
+  </nav>
+
+  <div class="stage">
+    <p class="eyebrow date">October 13, 2026<span>·</span>2026年10月13日</p>
+    <h1 class="title">Horizon Press</h1>
+  </div>
+
+  <ol class="toc">
+    <li><a href="#intro"><span class="n">(1)</span><span class="dots"></span><span class="label">Introduction<span class="zh">介绍</span></span></a></li>
+    <li><a href="#type"><span class="n">(2)</span><span class="dots"></span><span class="label">Typography<span class="zh">排版</span></span></a></li>
+    <li><a href="#texture"><span class="n">(3)</span><span class="dots"></span><span class="label">Texture<span class="zh">质感</span></span></a></li>
+    <li><a href="#usage"><span class="n">(4)</span><span class="dots"></span><span class="label">How to use<span class="zh">用法</span></span></a></li>
+  </ol>
+</header>
+
+<main>
+  <section class="chapter" id="intro">
+    <header><span class="eyebrow"><b>(1)</b>Introduction 介绍</span></header>
+    <div class="body">
+      <h2>A launch page that looks printed, not rendered<span class="zh">一张看起来像印出来的发布页</span></h2>
+      <p class="lede">This template borrows from magazine covers and photo collage: a serif headline pressed into the page with ink, a dusk horizon behind it, and torn scraps of photographs pasted onto the edges.</p>
+      <p class="zh-p">整页没有用一张图片。地平线是一个巨大的深色圆形加上多层 <code>box-shadow</code>；两侧的黄纸、沙丘和红岩是 CSS 渐变，再用 SVG 滤镜撕出毛边；标题的油墨感和整页的胶片颗粒都来自 <code>feTurbulence</code> 噪点。所以文件很小，打开就能直接改。</p>
+      <p class="zh-p">把标题、日期、目录和下面四个章节换成你自己的内容就能用。想换配色，只要改 <code>:root</code> 里的几个变量。</p>
+    </div>
+  </section>
+
+  <section class="chapter" id="type">
+    <header><span class="eyebrow"><b>(2)</b>Typography 排版</span></header>
+    <div class="body">
+      <h2>Four voices, one scale<span class="zh">四种字体角色，一套字号</span></h2>
+      <p class="zh-p">衬线体负责“说话”，无衬线体负责“标注”。标题字距收紧，眉题全大写并拉开字距，这是杂志排版里最常见的一组对比。</p>
+      <div class="specimen">
+        <div class="spec-row">
+          <div class="meta"><b>Display</b>Fraunces 500<br>56–168px · −3.5%</div>
+          <div class="s-display">Printed at dusk 黄昏付印</div>
+        </div>
+        <div class="spec-row">
+          <div class="meta"><b>Body</b>Fraunces 400<br>18px · 1.65</div>
+          <div class="s-body">Running text stays in the serif, near sixty-five characters a line. 正文用 Noto Serif SC，行高 1.9。</div>
+        </div>
+        <div class="spec-row">
+          <div class="meta"><b>UI</b>Hanken Grotesk<br>15px · 400/500</div>
+          <div class="s-ui">Navigation, buttons and captions 导航、按钮和说明文字</div>
+        </div>
+        <div class="spec-row">
+          <div class="meta"><b>Eyebrow</b>Hanken Grotesk 500<br>12px · +12% · caps</div>
+          <div class="s-eyebrow">September 22, 2026 · Release notes</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter wide" id="texture">
+    <header><span class="eyebrow"><b>(3)</b>Texture 质感</span></header>
+    <div class="body">
+      <h2>Three filters do all the work<span class="zh">三个滤镜撑起整个质感</span></h2>
+      <div class="demos">
+        <figure class="demo">
+          <div class="swatch ink"><span>Ink 墨</span></div>
+          <figcaption><b>Ink type 油墨字</b>先用噪点把笔画边缘推歪一点，再模糊、再随机挖掉小点，模拟活字印刷的漏墨。</figcaption>
+<pre><span class="c">&lt;!-- 加到 h1 上：filter: url(#ink) --&gt;</span>
+&lt;feTurbulence baseFrequency="0.9"/&gt;
+&lt;feDisplacementMap scale="2"/&gt;
+&lt;feGaussianBlur stdDeviation="0.5"/&gt;
+&lt;feColorMatrix ... "-8 0 0 0 6.6"/&gt;
+&lt;feComposite operator="in"/&gt;</pre>
+        </figure>
+        <figure class="demo">
+          <div class="swatch grain"><div class="clean"></div><span class="tag l">Clean</span><span class="tag r">+ Grain</span></div>
+          <figcaption><b>Film grain 胶片颗粒</b>一张内联的 SVG 噪点图，平铺后用 <code>overlay</code> 混合叠在照片上。左边没加，右边加了。</figcaption>
+<pre>.hero::after {
+  background: var(--grain) 0 0/200px;
+  mix-blend-mode: overlay;
+  <span class="c">/* 每秒抖四次，像放映机 */</span>
+  animation: flicker 1.2s steps(4) infinite;
+}</pre>
+        </figure>
+        <figure class="demo">
+          <div class="swatch torn"><div class="paper"></div></div>
+          <figcaption><b>Torn edge 撕纸边</b>横向低频、纵向高频的噪点驱动位移，矩形的边就会变成纤维状的毛边。</figcaption>
+<pre>&lt;filter id="torn"&gt;
+  &lt;feTurbulence
+    baseFrequency="0.05 0.35"/&gt;
+  &lt;feDisplacementMap scale="12"/&gt;
+&lt;/filter&gt;</pre>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="usage">
+    <header><span class="eyebrow"><b>(4)</b>How to use 用法</span></header>
+    <div class="body">
+      <h2>Make it yours in four edits<span class="zh">改四处就是你的了</span></h2>
+      <ol class="steps">
+        <li><h3>换标题和日期</h3><p>修改 <code>.date</code> 和 <code>h1.title</code>。标题越短，油墨效果越明显，两到四个词最好。</p></li>
+        <li><h3>改目录和章节</h3><p><code>.toc</code> 里每一项的 <code>href</code> 对应下面一个 <code>section</code> 的 <code>id</code>，增删时两边一起改。</p></li>
+        <li><h3>调配色</h3><p>纸面颜色在 <code>:root</code> 的 <code>--paper</code>、<code>--ink</code>、<code>--accent</code>；暗色模式在下面两个 dark 块里，要一起改。日落颜色在 <code>.stage::before</code> 的 <code>box-shadow</code>。</p></li>
+        <li><h3>换拼贴</h3><p>想用真照片，就把 <code>.scrap.left::after</code> 的背景换成 <code>url(你的图.jpg) center/cover</code>，<code>#torn</code> 滤镜会照样把边撕开。</p></li>
+      </ol>
+    </div>
+  </section>
+</main>
+
+<footer class="eyebrow">
+  <span>Horizon Press template</span>
+  <span>HTML · CSS · SVG filters · no images</span>
+</footer>
+</body>
+</html>
