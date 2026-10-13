@@ -43,3 +43,7 @@ The skill also triggers on 复古印刷 / 杂志感 / 胶片颗粒 / 撕纸拼�
 ## Credits
 
 Inspired by the visual language of Anthropic's Claude model launch pages. This skill reproduces the techniques only; it contains no Anthropic logos, fonts or copy. Fonts are from Google Fonts (Fraunces, Noto Serif SC, Hanken Grotesk, Noto Sans SC, JetBrains Mono).
+
+## License
+
+[MIT](LICENSE)
