@@ -2,7 +2,8 @@
 
 Contents
 1. Ink filter (`#ink`)
-2. Horizon arc
+2. Horizon arc (optional)
+2b. Flat horizon band (optional)
 3. Torn scraps and fake photo textures
 4. Film grain
 5. Dotted-leader TOC
@@ -38,7 +39,9 @@ Knobs:
 
 Scale the roughness with font size: values that look right at 160px look mushy at 48px. For a second, smaller ink heading, make a copy `#ink-sm` with `scale="1"` and the matrix intercept at ~7.
 
-## 2. Horizon arc
+## 2. Horizon arc (optional)
+
+One of several hero backdrops, not a requirement — see "Hero backdrop" in SKILL.md.
 
 ```css
 .stage { position: relative; }
@@ -62,6 +65,21 @@ Scale the roughness with font size: values that look right at 160px look mushy a
 - A wider circle → flatter horizon (more "from orbit"); narrower (e.g. 160vw) → visible curvature.
 - Move the horizon by changing `.32em`: `0` puts it under the baseline, `.6em` cuts through the middle.
 - The shadow stack *is* the sky. Reorder colours from hot (inner) to cool (outer).
+
+## 2b. Flat horizon band (optional)
+
+A straight glow line instead of the curved planet edge. Calmer, reads as landscape rather than orbit.
+
+```css
+.stage::before {
+  content: ""; position: absolute; z-index: 0; left: -50vw; right: -50vw;
+  top: calc(100% - .32em); bottom: -2000px;          /* the "ground" below the line */
+  font-size: clamp(56px, 11vw, 168px);
+  background: var(--night);
+  box-shadow: 0 -2px 3px #ffe2b0, 0 -10px 24px #ff9a4a, 0 -50px 90px rgba(230,100,50,.6), 0 -200px 220px rgba(110,140,200,.55);
+}
+```
+For no horizon at all, delete the `.stage::before` rule and let the hero gradient run to the bottom (end it in a dark colour so the TOC stays readable).
 
 ## 3. Torn scraps and fake photo textures
 
